@@ -42,6 +42,7 @@ def process_template(content: str) -> str:
     context = {
         "current_user_id": ExtraCache.current_user_id,
         "current_username": ExtraCache.current_username,
+        "current_first_name": ExtraCache.current_first_name,
     }
     return template.render(context)
 

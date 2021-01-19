@@ -96,6 +96,7 @@ class ExtraCache:
         r"\{\{.*("
         r"current_user_id\(.*\)|"
         r"current_username\(.*\)|"
+        r"current_first_name\(.*\)|"
         r"cache_key_wrapper\(.*\)|"
         r"url_param\(.*\)"
         r").*\}\}"
@@ -131,6 +132,20 @@ class ExtraCache:
                 self.cache_key_wrapper(g.user.username)
             return g.user.username
         return None
+
+    def current_first_name(self, add_to_cache_keys: bool = True) -> Optional[str]:
+        """
+        Return the first name of the user who is currently logged in.
+
+        :param add_to_cache_keys: Whether the value should be included in the cache key
+        :returns: The first_name
+        """
+
+        if g.user:
+            if add_to_cache_keys:
+                self.cache_key_wrapper(g.user.first_name)
+            return g.user.first_name
+        return None        
 
     def cache_key_wrapper(self, key: Any) -> Any:
         """
@@ -225,6 +240,7 @@ class BaseTemplateProcessor:  # pylint: disable=too-few-public-methods
             "url_param": extra_cache.url_param,
             "current_user_id": extra_cache.current_user_id,
             "current_username": extra_cache.current_username,
+            "current_first_name": extra_cache.current_first_name,
             "cache_key_wrapper": extra_cache.cache_key_wrapper,
             "filter_values": filter_values,
             "form_data": {},
