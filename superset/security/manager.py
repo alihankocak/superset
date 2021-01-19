@@ -91,14 +91,26 @@ UserModelView.include_route_methods = RouteMethod.CRUD_SET | {
     RouteMethod.ACTION,
     RouteMethod.API_READ,
     RouteMethod.ACTION_POST,
+    RouteMethod.API_CREATE,
+    RouteMethod.API_DELETE,
+    RouteMethod.API_UPDATE,
+    RouteMethod.API_GET,
     "userinfo",
 }
-RoleModelView.include_route_methods = RouteMethod.CRUD_SET
+RoleModelView.include_route_methods = RouteMethod.CRUD_SET | {
+    RouteMethod.ACTION,
+    RouteMethod.API_READ,
+    RouteMethod.ACTION_POST,
+    RouteMethod.API_CREATE,
+    RouteMethod.API_DELETE,
+    RouteMethod.API_UPDATE,
+    RouteMethod.API_GET,
+}
 PermissionViewModelView.include_route_methods = {RouteMethod.LIST}
 PermissionModelView.include_route_methods = {RouteMethod.LIST}
 ViewMenuModelView.include_route_methods = {RouteMethod.LIST}
 
-RoleModelView.list_columns = ["name"]
+RoleModelView.list_columns = ["name","permissions", "user"]
 RoleModelView.edit_columns = ["name", "permissions", "user"]
 RoleModelView.related_views = []
 
