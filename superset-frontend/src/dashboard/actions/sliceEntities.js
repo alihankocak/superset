@@ -45,7 +45,7 @@ export function fetchAllSlices(userId) {
       dispatch(fetchAllSlicesStarted());
 
       return SupersetClient.get({
-        endpoint: `/sliceasync/api/read?_flt_0_created_by=${userId}`,
+        endpoint: `/sliceasync/api/read`, //return all user charts endpoint: `/sliceasync/api/read?_flt_0_created_by=${userId}`,
       })
         .then(({ json }) => {
           const slices = {};
