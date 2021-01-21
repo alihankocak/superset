@@ -17,6 +17,7 @@
 """Defines the templating context for SQL Lab"""
 import inspect
 import re
+import requests
 from typing import Any, cast, List, Optional, Tuple, TYPE_CHECKING
 
 from flask import g, request
@@ -97,6 +98,7 @@ class ExtraCache:
         r"current_user_id\(.*\)|"
         r"current_username\(.*\)|"
         r"current_first_name\(.*\)|"
+        r"xso_user_company_id\(.*\)|"
         r"cache_key_wrapper\(.*\)|"
         r"url_param\(.*\)"
         r").*\}\}"
@@ -145,7 +147,19 @@ class ExtraCache:
             if add_to_cache_keys:
                 self.cache_key_wrapper(g.user.first_name)
             return g.user.first_name
-        return None        
+        return None  
+
+    def xso_user_company_id(self, add_to_cache_keys: bool = True) -> Optional[str]:
+        """
+        """
+
+        if g.user:
+            if add_to_cache_keys:
+                self.cache_key_wrapper(g.user.first_name)
+            req = requests.Session()
+            result = req.get("https://dev1.xsight.paneratech.com/api/user/api/rest/getinfo",headers={},verify=False)
+            return result.text
+        return None      
 
     def cache_key_wrapper(self, key: Any) -> Any:
         """
@@ -241,6 +255,7 @@ class BaseTemplateProcessor:  # pylint: disable=too-few-public-methods
             "current_user_id": extra_cache.current_user_id,
             "current_username": extra_cache.current_username,
             "current_first_name": extra_cache.current_first_name,
+            "xso_user_company_id": extra_cache.xso_user_company_id,
             "cache_key_wrapper": extra_cache.cache_key_wrapper,
             "filter_values": filter_values,
             "form_data": {},
